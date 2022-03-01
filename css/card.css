@@ -1,0 +1,55 @@
+.card {
+  background: #FFFFFF;
+  border: 1px solid #F3F3F3;
+  box-sizing: border-box;
+  border-radius: 40px;
+  width: 210px;
+  padding: 20px 30px 34px;
+  position: relative;
+  margin-bottom: 40px;
+  transition: all 0.3s ease-in-out;
+}
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0px 14px 30px rgba(0, 0, 0, 0.05);
+}
+.card--active {
+  box-shadow: 0px 14px 30px rgba(0, 0, 0, 0.05);
+}
+.card__heart {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
+.card__sneaker {
+  width: 133px;
+  height: 112px;
+  -o-object-fit: contain;
+     object-fit: contain;
+  display: block;
+  margin: 0 auto 14px;
+}
+.card__title {
+  font-size: 14px;
+  line-height: 17px;
+  margin-bottom: 14px;
+}
+.card__price {
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 13px;
+  text-transform: uppercase;
+  color: #BDBDBD;
+  margin-bottom: 2px;
+}
+.card__cost {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+}
+.card button {
+  background: none;
+}
+.card__add {
+  cursor: pointer;
+}

@@ -5,7 +5,7 @@ import cart from '../../resources/img/cart.svg'
 import heart from '../../resources/img/heart.svg'
 import user from '../../resources/img/user.svg'
 
-const Header = () => {
+const Header = ({onCartOpen, calcTotalPrice}) => {
    return (
       <header className="header">
          <div className="header__logo logo">
@@ -16,9 +16,9 @@ const Header = () => {
             </div>
          </div>
          <ul className="header__menu menu">
-            <li className="menu__item">
+            <li onClick={onCartOpen} className="menu__item">
                <img src={cart} alt="cart" className="menu__cart" />
-               <p className="menu__price">1205 руб.</p>
+               <p className="menu__price">{calcTotalPrice()} руб.</p>
             </li>
             <li className="menu__item">
                <img src={heart} alt="heart" className="menu__heart" />
