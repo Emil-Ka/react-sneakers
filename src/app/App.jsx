@@ -5,8 +5,12 @@ import axios from 'axios'
 import Main from '../pages/main/Main'
 import Favorites from '../pages/favorites/Favorites'
 import AppContext from '../context/AppContext'
+import Header from '../components/header/Header'
+import Layout from '../components/layout/Layout'
+import Drawer from '../components/drawer/Drawer'
 
 const App = () => {
+   const [loading, setLoading] = useState(true)
    const [cartOpen, setCartOpen] = useState(false)
    const [cartItems, setCartItems] = useState([])
    const [sneakersItems, setSneakersItems] = useState([])
@@ -17,15 +21,31 @@ const App = () => {
    const _ITEMS_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/items'
    const _FAVORITES_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/favorites'
 
-   useEffect(() => {
-      axios.get(_ITEMS_API)
-      .then(res => setSneakersItems(res.data))
+   useEffect( async () => {
+      setLoading(true)
 
-      axios.get(_CART_API)
-      .then(res => setCartItems(res.data))
+      try {
+         await axios.get(_ITEMS_API)
+         .then(res => setSneakersItems(res.data))
+      } catch(e) {
+         console.error(e)
+      }
+      
+      try {
+         await axios.get(_CART_API)
+         .then(res => setCartItems(res.data))
+      } catch(e) {
+         console.error(e)
+      }
 
-      axios.get(_FAVORITES_API)
-      .then(res => setFavoriteItems(res.data))
+      try {
+         await axios.get(_FAVORITES_API)
+         .then(res => setFavoriteItems(res.data))
+      } catch(e) {
+         console.error(e)
+      }
+
+      setLoading(false)
    }, [])
 
    //CART
@@ -120,16 +140,26 @@ const App = () => {
       return Math.ceil(calcTotalPrice() * 0.05)
    }
    return (
-      <Provider value={{onCartClose, onCartCloseByOverlay, calcTotalPrice, calcTax, cartOpen, sneakersItems, setSneakersItems, onRemoveFavoriteItem, onAddFavoriteItem, onRemoveCartItem, onAddCartItem, favoritesItems, cartItems, calcTotalPrice, onCartOpen}}>
+      <Provider value={{loading, onCartClose, onCartCloseByOverlay, calcTotalPrice, calcTax, cartOpen, sneakersItems, setSneakersItems, onRemoveFavoriteItem, onAddFavoriteItem, onRemoveCartItem, onAddCartItem, favoritesItems, cartItems, onCartOpen}}>
          <Router>
-            <Routes>
-               <Route path="/" element={
-                  <Main/>
-               }/>
-               <Route path="/favorites" element={
-                  <Favorites/>
-               }/>
-            </Routes>
+            <Layout>
+               <div className="main">
+                  {
+                     cartOpen ?
+                     <Drawer/> :
+                     null
+                  }
+                  <Header/>
+                  <Routes>
+                     <Route path="/" element={
+                        <Main/>
+                     }/>
+                     <Route path="/favorites" element={
+                        <Favorites/>
+                     }/>
+                  </Routes>
+               </div>
+            </Layout>
          </Router>
       </Provider>
    )
