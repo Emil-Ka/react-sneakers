@@ -15,11 +15,13 @@ const App = () => {
    const [cartItems, setCartItems] = useState([])
    const [sneakersItems, setSneakersItems] = useState([])
    const [favoritesItems, setFavoriteItems] = useState([])
+   const [ordersItems, setOrdersItems] = useState([])
    const {Provider} = AppContext
 
    const _CART_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/cart'
    const _ITEMS_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/items'
    const _FAVORITES_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/favorites'
+   const _ORDERS_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/orders'
 
    useEffect( async () => {
       setLoading(true)
@@ -41,6 +43,13 @@ const App = () => {
       try {
          await axios.get(_FAVORITES_API)
          .then(res => setFavoriteItems(res.data))
+      } catch(e) {
+         console.error(e)
+      }
+
+      try {
+         await axios.get(_ORDERS_API)
+         .then(res => setOrdersItems(res.data))
       } catch(e) {
          console.error(e)
       }
@@ -139,8 +148,25 @@ const App = () => {
    const calcTax = () => {
       return Math.ceil(calcTotalPrice() * 0.05)
    }
+
+   //ORDERS
+
+   const onAddOrders = async () => {
+      console.log(cartItems)
+      
+      cartItems.forEach(async (item) => {
+         await axios.post(_ORDERS_API, item)
+      })
+
+      cartItems.forEach(async (item) => {
+         onRemoveCartItem(item.id)
+      })
+
+      console.log(cartItems)
+   }
+
    return (
-      <Provider value={{loading, onCartClose, onCartCloseByOverlay, calcTotalPrice, calcTax, cartOpen, sneakersItems, setSneakersItems, onRemoveFavoriteItem, onAddFavoriteItem, onRemoveCartItem, onAddCartItem, favoritesItems, cartItems, onCartOpen}}>
+      <Provider value={{onAddOrders, ordersItems, loading, onCartClose, onCartCloseByOverlay, calcTotalPrice, calcTax, cartOpen, sneakersItems, setSneakersItems, onRemoveFavoriteItem, onAddFavoriteItem, onRemoveCartItem, onAddCartItem, favoritesItems, cartItems, onCartOpen}}>
          <Router>
             <Layout>
                <div className="main">

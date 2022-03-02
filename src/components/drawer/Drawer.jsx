@@ -1,5 +1,5 @@
 import './drawer.scss'
-import {useContext} from 'react'
+import {useContext, useEffect, useState} from 'react'
 
 import arrow from '../../resources/img/arrow.svg'
 import left_arrow from '../../resources/img/left-arrow.svg'
@@ -9,7 +9,13 @@ import box from '../../resources/img/box.png'
 import AppContext from '../../context/AppContext'
 
 const Drawer = () => {
-   const {onCartClose, cartItems, onCartCloseByOverlay, onRemoveCartItem, calcTotalPrice, calcTax} = useContext(AppContext)
+   const {onAddOrders, onCartClose, cartItems, onCartCloseByOverlay, onRemoveCartItem, calcTotalPrice, calcTax} = useContext(AppContext)
+   const [showReadyOrder, setShowReadyOrder] = useState(false)
+
+   useEffect(() => {
+      setShowReadyOrder(false)
+   }, [])
+
    return (
       <div
          className="overlay"
@@ -21,7 +27,7 @@ const Drawer = () => {
                   <img src={remove} alt="close"/>
                </button>
             </div>
-            {
+            {showReadyOrder ? null :
                cartItems.length > 0 ? (
                   <>
                      <ul className="drawer__cart cart">
@@ -54,7 +60,11 @@ const Drawer = () => {
                         <div className="total__dashed"></div>
                         <b className="total__price">{calcTax()} руб.</b>
                      </div>
-                     <button className="drawer__btn">
+                     <button
+                        onClick={() => {
+                           onAddOrders()
+                           setShowReadyOrder(true)}} 
+                        className="drawer__btn">
                         <span>Оформить заказ</span>
                         <img src={arrow} alt="next"/>
                      </button>
