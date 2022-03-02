@@ -1,11 +1,15 @@
 import './drawer.scss'
+import {useContext} from 'react'
 
 import arrow from '../../resources/img/arrow.svg'
 import left_arrow from '../../resources/img/left-arrow.svg'
 import remove from '../../resources/img/btn-remove.svg'
 import box from '../../resources/img/box.png'
 
-const Drawer = ({onCartClose, cartItems, onCartCloseByOverlay, onRemoveCartItem, calcTotalPrice, calcTax}) => {
+import AppContext from '../../context/AppContext'
+
+const Drawer = () => {
+   const {onCartClose, cartItems, onCartCloseByOverlay, onRemoveCartItem, calcTotalPrice, calcTax} = useContext(AppContext)
    return (
       <div
          className="overlay"

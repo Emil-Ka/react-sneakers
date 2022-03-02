@@ -1,13 +1,17 @@
 import './header.scss'
 
 import {NavLink} from 'react-router-dom'
+import {useContext} from 'react'
 
 import logo from '../../resources/img/logo.png'
 import cart from '../../resources/img/cart.svg'
 import heart from '../../resources/img/heart.svg'
 import user from '../../resources/img/user.svg'
 
-const Header = ({onCartOpen, calcTotalPrice}) => {
+import AppContext from '../../context/AppContext'
+
+const Header = () => {
+   const {onCartOpen, calcTotalPrice} = useContext(AppContext)
    return (
       <header className="header">
          <div className="header__logo logo">

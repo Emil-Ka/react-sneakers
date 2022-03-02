@@ -1,19 +1,21 @@
 import './favorites.scss'
+import '../../styles/cardList.scss'
 import back from '../../resources/img/back.svg'
 
 import {NavLink} from 'react-router-dom'
+import {useContext} from 'react'
 
 import Layout from '../../components/layout/Layout'
 import Header from '../../components/header/Header'
 import Card from '../../components/card/Card'
+import AppContext from '../../context/AppContext'
 
-const Favorites = ({onCartOpen, calcTotalPrice, onRemoveFavoriteItem, onAddFavoriteItem, onRemoveCartItem, onAddCartItem, favoritesItems, cartItems}) => {
+const Favorites = () => {
+   const {favoritesItems} = useContext(AppContext)
    return (
       <Layout>
          <div className="main">
-            <Header
-               onCartOpen={onCartOpen}
-               calcTotalPrice={calcTotalPrice}/>
+            <Header/>
             <div className="favorites">
                <div className="favorites__head">
                   <NavLink className="favorites__link" to="/">
@@ -21,18 +23,12 @@ const Favorites = ({onCartOpen, calcTotalPrice, onRemoveFavoriteItem, onAddFavor
                   </NavLink>
                   <h1 className="favorites__title">Мои закладки</h1>
                </div>
-               <ul className="card-list__cards cards">
+               <ul className="cards">
                   {
                      favoritesItems.map(item => (
                         <Card 
                            {...item}
-                           key={item.id}
-                           cartItems={cartItems}
-                           favoritesItems={favoritesItems}
-                           onAddCartItem={onAddCartItem}
-                           onRemoveCartItem={onRemoveCartItem}
-                           onAddFavoriteItem={onAddFavoriteItem}
-                           onRemoveFavoriteItem={onRemoveFavoriteItem}/>
+                           key={item.id}/>
                      ))
                   }
                </ul>

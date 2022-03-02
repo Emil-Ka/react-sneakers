@@ -120,36 +120,14 @@ const App = () => {
       return Math.ceil(calcTotalPrice() * 0.05)
    }
    return (
-      <Provider value={{}}>
+      <Provider value={{onCartClose, onCartCloseByOverlay, calcTotalPrice, calcTax, cartOpen, sneakersItems, setSneakersItems, onRemoveFavoriteItem, onAddFavoriteItem, onRemoveCartItem, onAddCartItem, favoritesItems, cartItems, calcTotalPrice, onCartOpen}}>
          <Router>
             <Routes>
                <Route path="/" element={
-                  <Main
-                  favoritesItems={favoritesItems}
-                  onRemoveFavoriteItem={onRemoveFavoriteItem}
-                  onAddFavoriteItem={onAddFavoriteItem}
-                  onRemoveCartItem={onRemoveCartItem}
-                  onAddCartItem={onAddCartItem}
-                  cartItems={cartItems}
-                  setSneakersItems={setSneakersItems}
-                  sneakersItems={sneakersItems}
-                  onCartOpen={onCartOpen}
-                  cartOpen={cartOpen}
-                  calcTax={calcTax}
-                  calcTotalPrice={calcTotalPrice}
-                  onCartCloseByOverlay={onCartCloseByOverlay}
-                  onCartClose={onCartClose}/>
+                  <Main/>
                }/>
                <Route path="/favorites" element={
-                  <Favorites
-                  onCartOpen={onCartOpen}
-                  calcTotalPrice={calcTotalPrice}
-                  cartItems={cartItems}
-                  favoritesItems={favoritesItems}
-                  onAddCartItem={onAddCartItem}
-                  onRemoveCartItem={onRemoveCartItem}
-                  onAddFavoriteItem={onAddFavoriteItem}
-                  onRemoveFavoriteItem={onRemoveFavoriteItem}/>
+                  <Favorites/>
                }/>
             </Routes>
          </Router>

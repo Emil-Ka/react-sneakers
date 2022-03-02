@@ -1,12 +1,16 @@
+import './card.scss'
+
+import {useContext} from 'react'
+
 import favorite from '../../resources/img/heart-on.svg'
 import unfavorite from '../../resources/img/heart-off.svg'
 import plus from '../../resources/img/plus.svg'
 import added from '../../resources/img/added.svg'
-//import img from '../../resources/img/1.jpg'
 
-import './card.scss'
+import AppContext from '../../context/AppContext'
 
-const Card = ({imgUrl, title, price, id, cartItems, favoritesItems, onAddCartItem, onRemoveCartItem, onAddFavoriteItem, onRemoveFavoriteItem}) => {
+const Card = ({imgUrl, title, price, id}) => {
+   const {cartItems, favoritesItems, onAddCartItem, onRemoveCartItem, onAddFavoriteItem, onRemoveFavoriteItem} = useContext(AppContext)
    return (
       <li className="card">
          {
