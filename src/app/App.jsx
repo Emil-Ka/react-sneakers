@@ -1,14 +1,17 @@
 import {useState, useEffect} from 'react'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import axios from 'axios'
 
 import Main from '../pages/main/Main'
 import Favorites from '../pages/favorites/Favorites'
+import AppContext from '../context/AppContext'
 
 const App = () => {
    const [cartOpen, setCartOpen] = useState(false)
    const [cartItems, setCartItems] = useState([])
    const [sneakersItems, setSneakersItems] = useState([])
    const [favoritesItems, setFavoriteItems] = useState([])
+   const {Provider} = AppContext
 
    const _CART_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/cart'
    const _ITEMS_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/items'
@@ -117,24 +120,40 @@ const App = () => {
       return Math.ceil(calcTotalPrice() * 0.05)
    }
    return (
-      // <Main
-      //    favoritesItems={favoritesItems}
-      //    onRemoveFavoriteItem={onRemoveFavoriteItem}
-      //    onAddFavoriteItem={onAddFavoriteItem}
-      //    onRemoveCartItem={onRemoveCartItem}
-      //    onAddCartItem={onAddCartItem}
-      //    cartItems={cartItems}
-      //    setSneakersItems={setSneakersItems}
-      //    sneakersItems={sneakersItems}
-      //    onCartOpen={onCartOpen}
-      //    cartOpen={cartOpen}
-      //    calcTax={calcTax}
-      //    calcTotalPrice={calcTotalPrice}
-      //    onCartCloseByOverlay={onCartCloseByOverlay}
-      //    onCartClose={onCartClose}/>
-      <Favorites
-         onCartOpen={onCartOpen}
-         calcTotalPrice={calcTotalPrice}/>
+      <Provider value={{}}>
+         <Router>
+            <Routes>
+               <Route path="/" element={
+                  <Main
+                  favoritesItems={favoritesItems}
+                  onRemoveFavoriteItem={onRemoveFavoriteItem}
+                  onAddFavoriteItem={onAddFavoriteItem}
+                  onRemoveCartItem={onRemoveCartItem}
+                  onAddCartItem={onAddCartItem}
+                  cartItems={cartItems}
+                  setSneakersItems={setSneakersItems}
+                  sneakersItems={sneakersItems}
+                  onCartOpen={onCartOpen}
+                  cartOpen={cartOpen}
+                  calcTax={calcTax}
+                  calcTotalPrice={calcTotalPrice}
+                  onCartCloseByOverlay={onCartCloseByOverlay}
+                  onCartClose={onCartClose}/>
+               }/>
+               <Route path="/favorites" element={
+                  <Favorites
+                  onCartOpen={onCartOpen}
+                  calcTotalPrice={calcTotalPrice}
+                  cartItems={cartItems}
+                  favoritesItems={favoritesItems}
+                  onAddCartItem={onAddCartItem}
+                  onRemoveCartItem={onRemoveCartItem}
+                  onAddFavoriteItem={onAddFavoriteItem}
+                  onRemoveFavoriteItem={onRemoveFavoriteItem}/>
+               }/>
+            </Routes>
+         </Router>
+      </Provider>
    )
 }
 
