@@ -2,9 +2,11 @@ import './main.scss'
 import '../../styles/cardList.scss'
 
 import {useContext, useState} from 'react'
+import {Carousel} from 'react-bootstrap'
 
 import search from '../../resources/img/search.svg'
 import remove from '../../resources/img/btn-remove.svg'
+import slide from '../../resources/img/slide.jpg'
 
 import Card from '../../components/card/Card'
 import AppContext from '../../context/AppContext'
@@ -19,6 +21,32 @@ const Main = () => {
    }
 
    return (
+      <>
+      <div className="slider">
+         <Carousel>
+            <Carousel.Item interval={3000}>
+               <img
+                  className="d-block slider__img"
+                  src={slide}
+                  alt="First slide"
+               />
+            </Carousel.Item>
+            <Carousel.Item interval={3000}>
+               <img
+                  className="d-block"
+                  src={slide}
+                  alt="First slide"
+               />
+            </Carousel.Item>
+            <Carousel.Item interval={3000}>
+               <img
+                  className="d-block"
+                  src={slide}
+                  alt="First slide"
+               />
+            </Carousel.Item>
+         </Carousel>
+      </div>
       <div className="card-list">
          <div className="card-list__header">
             <h1 className="card-list__title">Все кроссовки</h1>
@@ -59,6 +87,7 @@ const Main = () => {
             }
          </ul>
       </div>
+      </>
    )
 }
 

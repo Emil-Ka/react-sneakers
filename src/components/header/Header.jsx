@@ -33,9 +33,11 @@ const Header = () => {
                   </svg>
                </NavLink>
             </li>
-            <li className="menu__item">
-               <img src={user} alt="user" className="menu__user" />
-            </li>
+            <NavLink to="/orders" end>
+               <li className="menu__item">
+                  <img src={user} alt="user" className="menu__user" />
+               </li>
+            </NavLink>
          </ul>
       </header>
    )

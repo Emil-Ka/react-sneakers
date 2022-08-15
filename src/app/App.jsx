@@ -4,10 +4,14 @@ import axios from 'axios'
 
 import Main from '../pages/main/Main'
 import Favorites from '../pages/favorites/Favorites'
+import Orders from '../pages/orders/Orders'
 import AppContext from '../context/AppContext'
 import Header from '../components/header/Header'
 import Layout from '../components/layout/Layout'
 import Drawer from '../components/drawer/Drawer'
+
+import addItem from '../services/addItem'
+import removeItem from '../services/removeItem'
 
 const App = () => {
    const [loading, setLoading] = useState(true)
@@ -16,12 +20,13 @@ const App = () => {
    const [sneakersItems, setSneakersItems] = useState([])
    const [favoritesItems, setFavoriteItems] = useState([])
    const [ordersItems, setOrdersItems] = useState([])
+
    const {Provider} = AppContext
 
-   const _CART_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/cart'
-   const _ITEMS_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/items'
-   const _FAVORITES_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/favorites'
-   const _ORDERS_API = 'https://621a650dfaa12ee450f71c60.mockapi.io/orders'
+   const _CART_API = 'https://62fa6964ffd7197707ec0bc0.mockapi.io/cart'
+   const _ITEMS_API = 'https://62fa6964ffd7197707ec0bc0.mockapi.io/items'
+   const _FAVORITES_API = 'https://62fa6964ffd7197707ec0bc0.mockapi.io/favorites'
+   const _ORDERS_API = 'https://62fa6964ffd7197707ec0bc0.mockapi.io/orders'
 
    useEffect( async () => {
       setLoading(true)
@@ -47,13 +52,6 @@ const App = () => {
          console.error(e)
       }
 
-      try {
-         await axios.get(_ORDERS_API)
-         .then(res => setOrdersItems(res.data))
-      } catch(e) {
-         console.error(e)
-      }
-
       setLoading(false)
    }, [])
 
@@ -68,71 +66,27 @@ const App = () => {
    }
 
    const onCartCloseByOverlay = (event) => {
-      console.log(event.target)
       if (event.target.classList.contains('overlay')) {
          onCartClose()
       }
    }
 
    const onAddCartItem = (id) => {
-      const newCartItem = {
-         id: id,
-         imgUrl: sneakersItems[id - 1].imgUrl,
-         title: sneakersItems[id - 1].title,
-         price: sneakersItems[id - 1].price
-      }
-      setCartItems(prev => [...prev, newCartItem])
-      axios.post(_CART_API, newCartItem)
-      console.log(newCartItem)
+      addItem(sneakersItems, setCartItems, id, _CART_API)
    }
 
-   const onRemoveCartItem = async (id) => {
-      setCartItems(prev => [...prev.filter(item => {
-         return item.id !== id
-      })])
-
-      let idInApi
-      await axios.get(_CART_API)
-      .then(res => {
-         res.data.forEach(item => {
-            if (item.id === id) {
-               idInApi = item._id
-            }
-         })
-      })
-      await axios.delete(`${_CART_API}/${idInApi}`)
+   const onRemoveCartItem = (id) => {
+      removeItem(setCartItems, id, _CART_API)
    }
 
    //FAVORITE
 
    const onAddFavoriteItem = (id) => {
-      const newFavoriteItem = {
-         id: id,
-         imgUrl: sneakersItems[id - 1].imgUrl,
-         title: sneakersItems[id - 1].title,
-         price: sneakersItems[id - 1].price
-      }
-      setFavoriteItems(prev => [...prev, newFavoriteItem])
-      axios.post(_FAVORITES_API, newFavoriteItem)
-      console.log(newFavoriteItem)
+      addItem(sneakersItems, setFavoriteItems, id, _FAVORITES_API)
    }
 
-   const onRemoveFavoriteItem = async (id) => {
-         setFavoriteItems(prev => [...prev.filter(item => {
-            return item.id !== id
-         })])
-
-         let idInApi
-         await axios.get(_FAVORITES_API)
-         .then(res => {
-            res.data.forEach(item => {
-               if (item.id === id) {
-                  idInApi = item._id
-               }
-            })
-         })
-         await axios.delete(`${_FAVORITES_API}/${idInApi}`)
-         console.log(idInApi)
+   const onRemoveFavoriteItem = (id) => {
+      removeItem(setFavoriteItems, id, _FAVORITES_API)
    }
 
    //CART PRICE
@@ -152,8 +106,6 @@ const App = () => {
    //ORDERS
 
    const onAddOrders = async () => {
-      console.log(cartItems)
-      
       cartItems.forEach(async (item) => {
          await axios.post(_ORDERS_API, item)
       })
@@ -161,20 +113,14 @@ const App = () => {
       cartItems.forEach(async (item) => {
          onRemoveCartItem(item.id)
       })
-
-      console.log(cartItems)
    }
 
    return (
-      <Provider value={{onAddOrders, ordersItems, loading, onCartClose, onCartCloseByOverlay, calcTotalPrice, calcTax, cartOpen, sneakersItems, setSneakersItems, onRemoveFavoriteItem, onAddFavoriteItem, onRemoveCartItem, onAddCartItem, favoritesItems, cartItems, onCartOpen}}>
+      <Provider value={{_ORDERS_API, onAddOrders, ordersItems, setOrdersItems, loading, onCartClose, onCartCloseByOverlay, calcTotalPrice, calcTax, cartOpen, sneakersItems, setSneakersItems, onRemoveFavoriteItem, onAddFavoriteItem, onRemoveCartItem, onAddCartItem, favoritesItems, cartItems, onCartOpen}}>
          <Router>
             <Layout>
                <div className="main">
-                  {
-                     cartOpen ?
-                     <Drawer/> :
-                     null
-                  }
+                  <Drawer/>
                   <Header/>
                   <Routes>
                      <Route path="/" element={
@@ -182,6 +128,9 @@ const App = () => {
                      }/>
                      <Route path="/favorites" element={
                         <Favorites/>
+                     }/>
+                     <Route path="/orders" element={
+                        <Orders/>
                      }/>
                   </Routes>
                </div>

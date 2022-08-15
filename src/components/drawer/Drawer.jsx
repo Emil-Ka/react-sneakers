@@ -5,11 +5,12 @@ import arrow from '../../resources/img/arrow.svg'
 import left_arrow from '../../resources/img/left-arrow.svg'
 import remove from '../../resources/img/btn-remove.svg'
 import box from '../../resources/img/box.png'
+import done from '../../resources/img/done.png'
 
 import AppContext from '../../context/AppContext'
 
 const Drawer = () => {
-   const {onAddOrders, onCartClose, cartItems, onCartCloseByOverlay, onRemoveCartItem, calcTotalPrice, calcTax} = useContext(AppContext)
+   const {cartOpen, onAddOrders, onCartClose, cartItems, onCartCloseByOverlay, onRemoveCartItem, calcTotalPrice, calcTax} = useContext(AppContext)
    const [showReadyOrder, setShowReadyOrder] = useState(false)
 
    useEffect(() => {
@@ -18,7 +19,7 @@ const Drawer = () => {
 
    return (
       <div
-         className="overlay"
+         className={`overlay ${cartOpen ? 'overlayVisible' : ''}`}
          onClick={onCartCloseByOverlay}>
          <div className="drawer">
             <div className="drawer__header">
@@ -27,7 +28,18 @@ const Drawer = () => {
                   <img src={remove} alt="close"/>
                </button>
             </div>
-            {showReadyOrder ? null :
+            {
+               showReadyOrder ?
+               <div className="drawer__done-cart done-cart">
+                  <img className="done-cart__img" src={done} alt="done"/>
+                  <h3 className="done-cart__title">Заказ оформлен!</h3>
+                  <p className="done-cart__desc">Ваш заказ #{(Math.random() * 100000).toFixed()} скоро будет передан курьерской доставке</p>
+                  <button onClick={onCartClose} className="done-cart__btn">
+                     <img src={left_arrow} alt="next"/>
+                     <span>Вернуться назад</span>
+                  </button>
+               </div>
+               :
                cartItems.length > 0 ? (
                   <>
                      <ul className="drawer__cart cart">

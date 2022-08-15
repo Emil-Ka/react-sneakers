@@ -26,7 +26,7 @@ const Card = ({imgUrl, title, price, id}) => {
                className="card__heart"
                src={unfavorite}
                alt="unfavorite"
-               onClick={() => onAddFavoriteItem(id)}
+               onClick={() => {id && onAddFavoriteItem(id)}}
                /> 
          }
          <img src={imgUrl} alt={title} className="card__sneaker" />
@@ -47,7 +47,7 @@ const Card = ({imgUrl, title, price, id}) => {
                   className="card__add"
                   src={plus}
                   alt="add"
-                  onClick={() => onAddCartItem(id)}/>
+                  onClick={() => {id && onAddCartItem(id)}}/>
             }
          </div>
       </li>
