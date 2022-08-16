@@ -1,11 +1,11 @@
 # Веб-приложение React Sneakers
 
-https://weather-redux-app.vercel.app/ - ссылка на проект
+https://react-sneakers-sigma.vercel.app/ - ссылка на проект
 ## Инструкция по запуску проекта
 
 1. Сначала склонируйте проект себе на локальное устройство. Например, это можно сделать с помощью HTTPS. Команда для клонирования проекта: 
 ```
-git clone https://github.com/Emil-Ka/weather-redux-app.git
+git clone https://github.com/Emil-Ka/react-sneakers.git
 ```
 2. Убедитесь, что у вас установлена NodeJS. Сайт для скачивания: https://nodejs.org/ru/ Чтобы проверить, установлен ли NodeJS, можно воспользоваться командой:
 ```
